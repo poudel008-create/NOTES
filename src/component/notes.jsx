@@ -14,7 +14,8 @@ const Notes = () => {
   const [filterStatus, setFilterstatus] = useState("default")
   const [sort, setSort] = useState("default")
   const [search, setSearch] = useState("")
-
+  const [deleteIndex, setDeleteIndex] = useState(null)
+    const [deleteAll, setDeleteall] = useState(false)
 
 
 
@@ -61,20 +62,50 @@ const Notes = () => {
   }
 
   function handleDelete(idx) {
-    const sure = confirm("Do you want to delete this todo?")
-    if (sure == true) {
-      const updataedList = notes.filter((items, index) => idx != index)
-      setNotes(updataedList)
-    
-    if (notes[idx].status == "done") {
+    setDeleteIndex(idx)
+  }
+
+  function handleConfirmdelete() {
+
+
+    const updataedList = notes.filter((items, index) => index != deleteIndex)
+    setNotes(updataedList)
+
+    if (notes[deleteIndex].status == "done") {
       setTotaltask(totalTask - 1)
       setCompletedtask(completedTask - 1)
     }
-    if (notes[idx].status == "pending") {
+    if (notes[deleteIndex].status == "pending") {
       setTotaltask(totalTask - 1)
       setPendingtask(pendingTask - 1)
     }
-  }}
+    setDeleteIndex(null)
+  }
+
+  function handleCancleconfirm() {
+    setDeleteIndex(null)
+  }
+
+  function handleDeleteAll() {
+    if(notes.length>0){
+   setDeleteall(true)
+    }
+  }
+
+  function handleConfirmdeleteAll() {
+      setNotes([])
+      setDeleteall(false)
+       setTotaltask(0)
+        setPendingtask(0)
+      setCompletedtask(0)
+  }
+
+  function handleCancleconfirmAll() {
+   setDeleteall(false)
+  }
+
+
+
 
   function checkBoxHandler(value, idx) {
     const prevList = [...notes]
@@ -141,6 +172,7 @@ const Notes = () => {
       b.status.localeCompare(a.status)
     )
   }
+
 
 
 
@@ -214,6 +246,7 @@ const Notes = () => {
                 <option value="pending">Pending First</option>
                 <option value="done">Done First</option>
               </select>
+              <button className='add px-2 py-1  rounded-[10px] active:scale-95' onClick={handleDeleteAll} >Delete All</button>
             </div>
 
 
@@ -250,9 +283,76 @@ const Notes = () => {
                       }}><X size={16} color="#ffffff" strokeWidth={2.25} /></button>
                     </div>
                   </div>
+
                 </div>
               )
             })}
+
+           {deleteIndex !== null && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white rounded-xl p-6 w-80 shadow-xl flex flex-col gap-5">
+
+      <h1 className="text-xl font-bold text-center">
+        Delete this note?
+      </h1>
+
+      <p className="text-gray-600 text-center">
+        Are you sure you want to delete this note?
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={handleCancleconfirm}
+          className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleConfirmdelete}
+          className="px-4 py-2 rounded-lg bg-red-700 text-white hover:bg-red-800"
+        >
+          Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+{deleteAll==true && (
+  <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+    <div className="bg-white rounded-xl p-6 w-80 shadow-xl flex flex-col gap-5">
+
+      <h1 className="text-xl font-bold text-center">
+        Delete all note?
+      </h1>
+
+      <p className="text-gray-600 text-center">
+        Are you sure you want to delete all note?
+      </p>
+
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={handleCancleconfirmAll}
+          className="px-4 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleConfirmdeleteAll}
+          className="px-4 py-2 rounded-lg bg-red-800 text-white hover:bg-red-900"
+        >
+          Delete
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
+
+
+
 
 
           </div>
@@ -262,4 +362,4 @@ const Notes = () => {
   )
 }
 
-export default Notes
+export default Notes 
