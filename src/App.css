@@ -2,22 +2,9 @@
 
 .outline-text{
      color: transparent;
-  -webkit-text-stroke: 4px #392c3c;
+  -webkit-text-stroke: 4px #2F0936;
 }
 .cursive {
   font-family:  cursive;
 }
 
-.borderr{
-  border: #392c3c solid 3px;
-}
-
-.add{
-  background-color: #392c3c;
-  color: #f5f5f4;
-}
-
-.text{
-  color: #392c3c;
-  
-}
